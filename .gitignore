@@ -1,0 +1,25 @@
+## Build outputs
+bin/
+obj/
+.vs/
+.vscode/
+
+## IDE
+*.user
+*.suo
+*.sln.iml
+.idea/
+
+## Generated files
+*.exe
+*.dll
+*.pdb
+*.log
+
+## OS
+.DS_Store
+Thumbs.db
+
+## App-specific
+artifacts/
+*.autosave

@@ -1,0 +1,118 @@
+﻿<Window x:Class="JsonEditor.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:vm="clr-namespace:JsonEditor.App.ViewModels"
+        mc:Ignorable="d"
+        Title="JSON Editor"
+        Height="760"
+        Width="1200"
+        MinHeight="620"
+        MinWidth="940">
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+
+    <DockPanel Background="{DynamicResource WindowBackgroundBrush}">
+        <Menu DockPanel.Dock="Top" Background="{DynamicResource PanelBackgroundBrush}" Foreground="{DynamicResource ForegroundBrush}">
+            <MenuItem Header="File">
+                <MenuItem Header="Open" Command="{Binding OpenFileCommand}" />
+                <MenuItem Header="Save" Command="{Binding SaveFileCommand}" />
+                <MenuItem Header="Save As" Command="{Binding SaveAsFileCommand}" />
+                <MenuItem Header="Restore Backup" Command="{Binding RestoreBackupCommand}" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Previous Match" Command="{Binding PreviousMatchCommand}" />
+                <MenuItem Header="Next Match" Command="{Binding NextMatchCommand}" />
+                <MenuItem Header="Replace Preview" Command="{Binding BuildReplacePreviewCommand}" />
+                <MenuItem Header="Replace All" Command="{Binding ReplaceAllCommand}" />
+                <MenuItem Header="Validate" Command="{Binding ValidateCommand}" />
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Toggle Theme" Command="{Binding ToggleThemeCommand}" />
+            </MenuItem>
+        </Menu>
+
+        <StatusBar DockPanel.Dock="Bottom" Background="{DynamicResource PanelBackgroundBrush}" Foreground="{DynamicResource ForegroundBrush}">
+            <StatusBarItem>
+                <TextBlock Text="{Binding StatusMessage}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="Autosave(s):" Margin="4,0,8,0" />
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBox Width="60" Text="{Binding AutoSaveIntervalSeconds, UpdateSourceTrigger=PropertyChanged}" />
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.ColumnSpan="3" Grid.Row="0" Padding="8" Margin="0,0,0,12" CornerRadius="8" Background="{DynamicResource PanelBackgroundBrush}">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Find" VerticalAlignment="Center" Foreground="{DynamicResource ForegroundBrush}" />
+                        <TextBox Width="180" Margin="8,0,0,0" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Content="Prev" Margin="8,0,0,0" Padding="10,2" Command="{Binding PreviousMatchCommand}" />
+                        <Button Content="Next" Margin="8,0,0,0" Padding="10,2" Command="{Binding NextMatchCommand}" />
+                        <TextBlock Text="Replace" Margin="16,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource ForegroundBrush}" />
+                        <TextBox Width="180" Margin="8,0,0,0" Text="{Binding ReplaceText, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Content="Preview" Margin="8,0,0,0" Padding="10,2" Command="{Binding BuildReplacePreviewCommand}" />
+                    </StackPanel>
+
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox Content="Regex" Margin="0,0,12,0" IsChecked="{Binding IsRegexSearch}" Foreground="{DynamicResource ForegroundBrush}" />
+                        <CheckBox Content="Match Case" Margin="0,0,12,0" IsChecked="{Binding MatchCaseSearch}" Foreground="{DynamicResource ForegroundBrush}" />
+                        <CheckBox Content="Dark Theme" IsChecked="{Binding IsDarkTheme}" Checked="ThemeCheckChanged" Unchecked="ThemeCheckChanged" Foreground="{DynamicResource ForegroundBrush}" />
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <Border Grid.Row="1" Grid.Column="0" CornerRadius="10" Padding="8" Background="{DynamicResource PanelBackgroundBrush}">
+                <avalonedit:TextEditor Name="Editor"
+                                       ShowLineNumbers="True"
+                                       FontFamily="Consolas"
+                                       FontSize="14"
+                                       TextChanged="Editor_TextChanged"
+                                       Background="{DynamicResource EditorBackgroundBrush}"
+                                       Foreground="{DynamicResource EditorForegroundBrush}" />
+            </Border>
+
+            <Grid Grid.Row="1" Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="12" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" CornerRadius="10" Padding="10" Background="{DynamicResource PanelBackgroundBrush}">
+                    <TreeView ItemsSource="{Binding TreeNodes}">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <TextBlock Text="{Binding Label}" Foreground="{DynamicResource ForegroundBrush}" />
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </Border>
+
+                <Border Grid.Row="2" CornerRadius="10" Padding="10" Background="{DynamicResource PanelBackgroundBrush}">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Text="{Binding ReplacePreviewSummary}" Margin="0,0,0,6" Foreground="{DynamicResource ForegroundBrush}" />
+                        <ListBox ItemsSource="{Binding ReplacePreviewItems}" />
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>
