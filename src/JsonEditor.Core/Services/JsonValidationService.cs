@@ -3,7 +3,7 @@ using JsonEditor.Core.Models;
 
 namespace JsonEditor.Core.Services;
 
-public sealed class JsonValidationService
+public sealed class JsonValidationService : IJsonValidationService
 {
     public JsonValidationResult Validate(string text)
     {

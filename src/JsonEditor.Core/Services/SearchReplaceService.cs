@@ -3,7 +3,7 @@ using JsonEditor.Core.Models;
 
 namespace JsonEditor.Core.Services;
 
-public sealed class SearchReplaceService
+public sealed class SearchReplaceService : ISearchReplaceService
 {
     public (int Start, int Length)? FindNextMatch(string text, SearchOptions options, int fromIndex)
     {

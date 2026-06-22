@@ -3,7 +3,7 @@ using JsonEditor.Core.Models;
 
 namespace JsonEditor.Core.Services;
 
-public sealed class JsonTreeBuilder
+public sealed class JsonTreeBuilder : IJsonTreeBuilder
 {
     public JsonTreeNode? Build(string jsonText)
     {

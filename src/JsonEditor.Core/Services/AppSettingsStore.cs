@@ -3,7 +3,7 @@ using JsonEditor.Core.Models;
 
 namespace JsonEditor.Core.Services;
 
-public sealed class AppSettingsStore
+public sealed class AppSettingsStore : IAppSettingsStore
 {
     public async Task<AppSettings> LoadAsync(string filePath, CancellationToken cancellationToken = default)
     {
