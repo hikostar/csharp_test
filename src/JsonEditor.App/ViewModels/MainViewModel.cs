@@ -11,10 +11,13 @@ namespace JsonEditor.App.ViewModels;
 
 public sealed class MainViewModel : INotifyPropertyChanged
 {
-    private readonly JsonValidationService _validationService = new();
-    private readonly JsonTreeBuilder _treeBuilder = new();
-    private readonly SearchReplaceService _searchReplaceService = new();
-    private readonly AppSettingsStore _settingsStore = new();
+    private readonly IJsonValidationService _validationService;
+    private readonly IJsonTreeBuilder _treeBuilder;
+    private readonly ISearchReplaceService _searchReplaceService;
+    private readonly IAppSettingsStore _settingsStore;
+    private readonly IFileDialogService _fileDialogService;
+    private readonly IMessageBoxService _messageBoxService;
+    private readonly bool _autoSaveLoopEnabled;
 
     private string _jsonText = string.Empty;
     private string _searchText = string.Empty;
@@ -31,7 +34,33 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private int _selectedMatchLength;
 
     public MainViewModel()
+        : this(
+            new JsonValidationService(),
+            new JsonTreeBuilder(),
+            new SearchReplaceService(),
+            new AppSettingsStore(),
+            new FileDialogService(),
+            new MessageBoxService())
     {
+    }
+
+    public MainViewModel(
+        IJsonValidationService validationService,
+        IJsonTreeBuilder treeBuilder,
+        ISearchReplaceService searchReplaceService,
+        IAppSettingsStore settingsStore,
+        IFileDialogService fileDialogService,
+        IMessageBoxService messageBoxService,
+        bool startAutoSaveLoop = true)
+    {
+        _validationService = validationService ?? throw new ArgumentNullException(nameof(validationService));
+        _treeBuilder = treeBuilder ?? throw new ArgumentNullException(nameof(treeBuilder));
+        _searchReplaceService = searchReplaceService ?? throw new ArgumentNullException(nameof(searchReplaceService));
+        _settingsStore = settingsStore ?? throw new ArgumentNullException(nameof(settingsStore));
+        _fileDialogService = fileDialogService ?? throw new ArgumentNullException(nameof(fileDialogService));
+        _messageBoxService = messageBoxService ?? throw new ArgumentNullException(nameof(messageBoxService));
+        _autoSaveLoopEnabled = startAutoSaveLoop;
+
         OpenFileCommand = new RelayCommand(OpenFile);
         SaveFileCommand = new RelayCommand(SaveFile, () => !string.IsNullOrWhiteSpace(CurrentFilePath));
         SaveAsFileCommand = new RelayCommand(SaveAsFile);
@@ -44,7 +73,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
         ToggleThemeCommand = new RelayCommand(() => IsDarkTheme = !IsDarkTheme);
 
         AutoSaveTimer = new PeriodicTimer(TimeSpan.FromSeconds(AutoSaveIntervalSeconds));
-        _ = RunAutoSaveLoopAsync();
+        if (_autoSaveLoopEnabled)
+        {
+            _ = RunAutoSaveLoopAsync();
+        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -203,7 +235,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
             _autoSaveIntervalSeconds = value;
             AutoSaveTimer.Dispose();
             AutoSaveTimer = new PeriodicTimer(TimeSpan.FromSeconds(AutoSaveIntervalSeconds));
-            _ = RunAutoSaveLoopAsync();
+            if (_autoSaveLoopEnabled)
+            {
+                _ = RunAutoSaveLoopAsync();
+            }
             OnPropertyChanged();
         }
     }
@@ -281,72 +316,79 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private async Task RunAutoSaveLoopAsync()
     {
-        while (await AutoSaveTimer.WaitForNextTickAsync())
+        try
         {
-            if (string.IsNullOrWhiteSpace(CurrentFilePath))
+            while (await AutoSaveTimer.WaitForNextTickAsync())
             {
-                continue;
-            }
+                if (string.IsNullOrWhiteSpace(CurrentFilePath))
+                {
+                    continue;
+                }
 
-            var hasRecentEdit = DateTime.UtcNow - _lastEditTimeUtc < TimeSpan.FromSeconds(AutoSaveIntervalSeconds);
-            if (!hasRecentEdit)
-            {
-                continue;
-            }
+                var hasRecentEdit = DateTime.UtcNow - _lastEditTimeUtc < TimeSpan.FromSeconds(AutoSaveIntervalSeconds);
+                if (!hasRecentEdit)
+                {
+                    continue;
+                }
 
-            try
-            {
-                await File.WriteAllTextAsync(CurrentFilePath + ".autosave", JsonText);
-                StatusMessage = "Autosaved backup";
+                try
+                {
+                    await File.WriteAllTextAsync(CurrentFilePath + ".autosave", JsonText);
+                    StatusMessage = "Autosaved backup";
+                }
+                catch (Exception ex)
+                {
+                    StatusMessage = $"Autosave failed: {ex.Message}";
+                }
             }
-            catch (Exception ex)
-            {
-                StatusMessage = $"Autosave failed: {ex.Message}";
-            }
+        }
+        catch (ObjectDisposedException)
+        {
         }
     }
 
     private void OpenFile()
     {
-        var dialog = new Microsoft.Win32.OpenFileDialog
-        {
-            Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
-        };
-
-        if (dialog.ShowDialog() != true)
+        var selectedFilePath = _fileDialogService.ShowOpenDialog();
+        if (string.IsNullOrWhiteSpace(selectedFilePath))
         {
             return;
         }
 
-        var fileText = File.ReadAllText(dialog.FileName);
-        var backupPath = BuildBackupPath(dialog.FileName);
+        var restoredFromBackup = false;
+        var fileText = File.ReadAllText(selectedFilePath);
+        var backupPath = BuildBackupPath(selectedFilePath);
         if (File.Exists(backupPath))
         {
-            var fileTime = File.GetLastWriteTimeUtc(dialog.FileName);
+            var fileTime = File.GetLastWriteTimeUtc(selectedFilePath);
             var backupTime = File.GetLastWriteTimeUtc(backupPath);
             if (backupTime > fileTime)
             {
-                var choice = System.Windows.MessageBox.Show(
+                var choice = _messageBoxService.ShowYesNoCancel(
                     "新しい自動保存バックアップが見つかりました。復元しますか？\nYes: 復元 / No: 元ファイルを開く / Cancel: 開く処理を中止",
-                    "Restore Backup",
-                    System.Windows.MessageBoxButton.YesNoCancel,
-                    System.Windows.MessageBoxImage.Question);
+                    "Restore Backup");
 
-                if (choice == System.Windows.MessageBoxResult.Cancel)
+                if (choice < 0)
                 {
                     return;
                 }
 
-                if (choice == System.Windows.MessageBoxResult.Yes)
+                if (choice > 0)
                 {
                     fileText = File.ReadAllText(backupPath);
-                    StatusMessage = "Backup restored while opening file";
+                    restoredFromBackup = true;
                 }
             }
         }
 
         JsonText = fileText;
-        CurrentFilePath = dialog.FileName;
+        CurrentFilePath = selectedFilePath;
+        if (restoredFromBackup)
+        {
+            StatusMessage = "Backup restored while opening file";
+            return;
+        }
+
         if (StatusMessage != "Backup restored while opening file")
         {
             StatusMessage = "File opened";
@@ -361,17 +403,14 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private void SaveAsFile()
     {
-        var dialog = new Microsoft.Win32.SaveFileDialog
-        {
-            Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
-        };
-
-        if (dialog.ShowDialog() != true)
+        var defaultFileName = string.IsNullOrWhiteSpace(CurrentFilePath) ? null : Path.GetFileName(CurrentFilePath);
+        var selectedFilePath = _fileDialogService.ShowSaveDialog(defaultFileName);
+        if (string.IsNullOrWhiteSpace(selectedFilePath))
         {
             return;
         }
 
-        CurrentFilePath = dialog.FileName;
+        CurrentFilePath = selectedFilePath;
         SaveFile();
     }
 

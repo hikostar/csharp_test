@@ -23,10 +23,12 @@ public partial class MainWindow : Window
 
     public void ApplyTheme(bool isDarkTheme)
     {
-        var source = isDarkTheme ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml";
+        var source = isDarkTheme
+            ? "pack://application:,,,/JsonEditor.App;component/Themes/DarkTheme.xaml"
+            : "pack://application:,,,/JsonEditor.App;component/Themes/LightTheme.xaml";
         var dictionaries = Application.Current.Resources.MergedDictionaries;
         dictionaries.Clear();
-        dictionaries.Add(new ResourceDictionary { Source = new Uri(source, UriKind.Relative) });
+        dictionaries.Add(new ResourceDictionary { Source = new Uri(source, UriKind.Absolute) });
     }
 
     private void Editor_TextChanged(object? sender, EventArgs e)

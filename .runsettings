@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RunSettings>
   <DataCollectionRunSettings>
-    <DataCollector friendlyName="XPlat Code Coverage" assemblyQualifiedName="Coverlet.Collector.DataCollection.CoverletDataCollector, coverlet.collector, Version=6.0.0.0, Culture=neutral, PublicKeyToken=0ae41f6b5d6d40f8" enabled="true">
-      <Configuration>
-        <ExcludeByFile>**/*.xaml.cs</ExcludeByFile>
-      </Configuration>
-    </DataCollector>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage" assemblyQualifiedName="Coverlet.Collector.DataCollection.CoverletDataCollector, coverlet.collector, Version=6.0.0.0, Culture=neutral, PublicKeyToken=0ae41f6b5d6d40f8" enabled="true">
+        <Configuration>
+          <ExcludeByFile>**/*.xaml.cs</ExcludeByFile>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
   </DataCollectionRunSettings>
 </RunSettings>

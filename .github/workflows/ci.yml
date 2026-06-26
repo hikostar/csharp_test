@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore JsonEditor.sln
+
+      - name: Build
+        run: dotnet build JsonEditor.sln --configuration Release --no-restore
+
+      - name: Test with Coverage
+        run: dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --configuration Release --no-build --settings .runsettings --collect:"XPlat Code Coverage"
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: tests/JsonEditor.App.Tests/TestResults/**

@@ -4,17 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
-        xmlns:vm="clr-namespace:JsonEditor.App.ViewModels"
         mc:Ignorable="d"
         Title="JSON Editor"
         Height="760"
         Width="1200"
         MinHeight="620"
         MinWidth="940">
-    <Window.DataContext>
-        <vm:MainViewModel />
-    </Window.DataContext>
-
     <DockPanel Background="{DynamicResource WindowBackgroundBrush}">
         <Menu DockPanel.Dock="Top" Background="{DynamicResource PanelBackgroundBrush}" Foreground="{DynamicResource ForegroundBrush}">
             <MenuItem Header="File">

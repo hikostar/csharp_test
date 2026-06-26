@@ -57,6 +57,12 @@ powershell -ExecutionPolicy Bypass -File scripts/publish-exe.ps1
 dotnet test JsonEditor.sln
 ```
 
+## ドキュメント
+
+- [設計仕様書](doc/Design_Specification.md)
+- [操作マニュアル](doc/User_Manual.md)
+- [検証仕様兼結果報告書](doc/Verification_Spec&result.md)
+
 ## 既知の制約
 
 - 対象サイズは 10MB 程度を想定

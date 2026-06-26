@@ -1,25 +1,32 @@
-## Build outputs
-bin/
-obj/
+## .NET / Build artifacts
+**/bin/
+**/obj/
+dist/
+artifacts/
+
+## Test results / coverage
+**/TestResults/
+*.trx
+*.coverage
+*.coveragexml
+coverage.cobertura.xml
+
+## IDE / editor settings
 .vs/
 .vscode/
-
-## IDE
+.idea/
 *.user
 *.suo
 *.sln.iml
-.idea/
 
-## Generated files
-*.exe
-*.dll
-*.pdb
+## Logs and temporary files
 *.log
+*.tmp
 
 ## OS
 .DS_Store
 Thumbs.db
 
-## App-specific
-artifacts/
+## App-specific local files
 *.autosave
+JsonEditor.exe
