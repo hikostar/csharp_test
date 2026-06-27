@@ -580,7 +580,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var validationResult = _validationService.Validate(JsonText);
         if (!validationResult.IsValid)
         {
-            StatusMessage = validationResult.ErrorMessage ?? "Invalid JSON";
+            StatusMessage = BuildValidationErrorStatus(validationResult);
             return;
         }
 
@@ -594,6 +594,19 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
         TreeNodes.Clear();
         TreeNodes.Add(ToViewModel(rootNode));
+    }
+
+    private static string BuildValidationErrorStatus(JsonValidationResult validationResult)
+    {
+        var baseMessage = validationResult.ErrorMessage ?? "Invalid JSON";
+        if (!validationResult.LineNumber.HasValue || !validationResult.BytePositionInLine.HasValue)
+        {
+            return baseMessage;
+        }
+
+        var line = validationResult.LineNumber.Value + 1;
+        var column = validationResult.BytePositionInLine.Value + 1;
+        return $"{baseMessage} (Line: {line}, Column: {column})";
     }
 
     private static JsonTreeNodeViewModel ToViewModel(JsonTreeNode node)

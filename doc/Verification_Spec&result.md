@@ -168,7 +168,7 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --filter "Cat
 ### 6.1 単体・統合・UI・性能テスト実行
 
 結果:
-- 合格: 59
+- 合格: 60
 - 失敗: 0
 - スキップ: 0
 
@@ -189,7 +189,7 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --filter "Cat
 
 実行条件:
 - 実行コマンド: dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj
-- 判定: 全59件 PASS
+- 判定: 全60件 PASS
 
 JsonTreeBuilderTests (1/1 PASS):
 1. Build_ReturnsRootNode_ForValidJson: PASS
@@ -228,24 +228,41 @@ JsonTreeNodeViewModelTests (11/11 PASS):
 10. EmptyLabel_IsAccepted: PASS
 11. MultipleInstances_AreIndependent: PASS
 
-MainViewModelTests (17/17 PASS):
+MainViewModelTests (18/18 PASS):
 1. Constructor_Throws_WhenValidationServiceIsNull: PASS
 2. ValidateCommand_SetsStatusValid_AndBuildsTree: PASS
 3. ValidateCommand_SetsErrorStatus_WhenJsonIsInvalid: PASS
-4. ReplaceAllCommand_ReplacesJsonText_AndSetsCompletedStatus: PASS
-5. ReplaceAllCommand_SetsErrorStatus_WhenServiceThrows: PASS
-6. NextMatchCommand_UpdatesSelection_WhenMatchExists: PASS
-7. PreviousMatchCommand_UpdatesSelection_WhenMatchExists: PASS
-8. BuildReplacePreviewCommand_GeneratesPreviewItems: PASS
-9. BuildReplacePreviewCommand_SetsErrorStatus_WhenRegexIsInvalid: PASS
-10. ToggleThemeCommand_TogglesThemeFlag: PASS
-11. OpenFileCommand_LoadsSelectedFile: PASS
-12. OpenFileCommand_RestoresBackup_WhenUserChoosesYes: PASS
-13. OpenFileCommand_Cancels_WhenUserChoosesCancelForBackupRestore: PASS
-14. SaveAsFileCommand_SavesJsonToSelectedPath: PASS
-15. RestoreBackupCommand_LoadsBackupForCurrentFile: PASS
-16. InitializeAsync_LoadsPersistedSettings: PASS
-17. ShutdownAsync_PersistsCurrentSettings: PASS
+4. ValidateCommand_AppendsLineAndColumn_WhenValidationContainsLocation: PASS
+5. ReplaceAllCommand_ReplacesJsonText_AndSetsCompletedStatus: PASS
+6. ReplaceAllCommand_SetsErrorStatus_WhenServiceThrows: PASS
+7. NextMatchCommand_UpdatesSelection_WhenMatchExists: PASS
+8. PreviousMatchCommand_UpdatesSelection_WhenMatchExists: PASS
+9. BuildReplacePreviewCommand_GeneratesPreviewItems: PASS
+10. BuildReplacePreviewCommand_SetsErrorStatus_WhenRegexIsInvalid: PASS
+11. ToggleThemeCommand_TogglesThemeFlag: PASS
+12. OpenFileCommand_LoadsSelectedFile: PASS
+13. OpenFileCommand_RestoresBackup_WhenUserChoosesYes: PASS
+14. OpenFileCommand_Cancels_WhenUserChoosesCancelForBackupRestore: PASS
+15. SaveAsFileCommand_SavesJsonToSelectedPath: PASS
+16. RestoreBackupCommand_LoadsBackupForCurrentFile: PASS
+17. InitializeAsync_LoadsPersistedSettings: PASS
+18. ShutdownAsync_PersistsCurrentSettings: PASS
+
+### 6.4 最小品質ゲート実行結果 (2026-06-27)
+
+実行コマンド:
+- dotnet --info
+- dotnet build JsonEditor.sln
+- dotnet test JsonEditor.sln
+- dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+- powershell -ExecutionPolicy Bypass -File scripts/validate-pr-guard-local.ps1
+
+結果:
+- 環境確認: .NET SDK 8.0.422
+- Build: PASS (0 warning / 0 error)
+- Test: PASS (60 passed, 0 failed)
+- Coverage: PASS (70.35% line, 54.23% branch)
+- PR Guard: PASS (ExitCode=0)
 
 IntegrationTests (5/5 PASS):
 1. OpenValidateAndTreeBuild_WorksEndToEnd: PASS
@@ -274,7 +291,7 @@ UIComponentTests (6/6 PASS):
 
 | 指標 | 初期 | 現在 | 変化 |
 |:---|:---:|:---:|:---:|
-| テスト数 | 8 | 59 | +51 |
+| テスト数 | 8 | 60 | +52 |
 | テストクラス数 | 3 | 9 | +6 |
 | ラインカバレッジ | 53.75% (Core中心) | 70.35% | 改善 |
 | ブランチカバレッジ | 39.09% (Core中心) | 54.23% | 改善 |

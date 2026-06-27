@@ -151,7 +151,7 @@ JsonEditor は JSON テキスト編集と JSON 構造確認を目的とした WP
 - 仕様
   - 空/空白は有効 JSON として扱う
   - `JsonDocument.Parse` 成功時は `IsValid = true`
-  - 失敗時は `JsonException.Message` を返す
+  - 失敗時は `JsonException.Message` と `LineNumber`/`BytePositionInLine` を返す
 
 #### JsonTreeBuilder
 
@@ -197,7 +197,7 @@ JsonEditor は JSON テキスト編集と JSON 構造確認を目的とした WP
   - `SearchText`, `ReplaceText`, `MatchCase`, `UseRegex`
 
 - `JsonValidationResult`
-  - `IsValid`, `ErrorMessage`
+  - `IsValid`, `ErrorMessage`, `LineNumber`, `BytePositionInLine`
 
 - `JsonTreeNode`
   - `Label`, `Children`
@@ -237,7 +237,7 @@ JsonEditor は JSON テキスト編集と JSON 構造確認を目的とした WP
 
 - `JsonText` 更新時に検証実行
 - 有効時: `Valid JSON` + ツリー再構築
-- 無効時: エラーメッセージ表示（ツリーは再生成しない）
+- 無効時: エラーメッセージ表示（行・列情報がある場合は `Line`/`Column` を付与、ツリーは再生成しない）
 
 ### 7.5 自動保存
 

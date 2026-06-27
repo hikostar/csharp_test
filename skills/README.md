@@ -24,29 +24,70 @@ Anthropic が公式公開した skill-creator を、JsonEditor (C# .NET 8 WPF) �
 
 ```
 skills/
-├── GETTING_STARTED.md                    ← ⭐ ここから開始！
-├── README.md                             ← このファイル
+├── GETTING_STARTED.md                        # 5分クイックスタート
+├── README.md                                 # このファイル
 │
-└── skill-creator/                        ← メタスキル本体
-    ├── SKILL.md                          ← 全体ガイド（詳細）
-    │
+├── skill-creator/                            # メタスキル（スキル開発用）
+│   ├── SKILL.md                              # メタスキル本体（主要説明）
+│   ├── evals/
+│   │   ├── evals.json                        # テストケース定義テンプレート
+│   │   ├── trigger-eval.json                 # トリガー判定テストテンプレート
+│   │   └── results.json                      # テスト実行結果（自動生成）
+│   ├── eval-viewer/
+│   │   └── generate_review.py                # HTML レビュー画面生成スクリプト
+│   ├── references/
+│   │   ├── description-tuning-guide.md       # Description の書き方ガイド
+│   │   └── assertion-patterns.md             # Assertion パターン集
+│   └── scripts/
+│       ├── run_evals.py                      # テスト実行スクリプト
+│       └── run_loop.py                       # Description チューニングスクリプト
+│
+└── code-analyzer/                            # C# コード品質分析スキル
+    ├── README.md                             # ⭐ セットアップガイド
+    ├── SKILL.md                              # スキル定義（6つの分析）
     ├── evals/
-    │   ├── evals.json                    ← テストケーステンプレート
-    │   ├── trigger-eval.json             ← トリガー判定テストテンプレート
-    │   └── results.json                  ← テスト実行結果（自動生成）
-    │
-    ├── eval-viewer/
-    │   └── generate_review.py            ← HTML レビュー画面生成
-    │
+    │   ├── evals.json                        # 8 つのテストケース
+    │   ├── trigger-eval.json                 # 15 個のトリガー判定テスト
+    │   └── results.json                      # テスト実行結果
     ├── references/
-    │   ├── description-tuning-guide.md   ← Description の書き方ガイド
-    │   ├── assertion-patterns.md         ← Assertion パターン集
-    │   └── test-analysis-patterns.md     ← テスト解析パターン（準備中）
-    │
+    │   └── csharp-analysis-patterns.md       # C# 分析パターン集
     └── scripts/
-        ├── run_evals.py                  ← テスト実行スクリプト
-        └── run_loop.py                   ← Description チューニング
+        └── [Python スクリプト]
 ```
+
+## 📋 スキル一覧
+
+| スキル | 説明 | ドキュメント |
+|-------|------|------------|
+| **skill-creator** | メタスキル（新しいスキル開発用） | [SKILL.md](skill-creator/SKILL.md) |
+| **code-analyzer** | C# コード品質多角分析 | [README.md](code-analyzer/README.md) |
+
+### code-analyzer スキル（新規）
+
+**目的**: C# コード品質を 6 つの角度から分析 & 改善提案
+
+**6つの分析**:
+```
+1. カバレッジ分析        → 未テスト関数を優先度付けで提案
+2. 複雑度分析           → CC が高いメソッドをリファクタ提案
+3. 依存関係分析         → 循環依存・層違反を検出
+4. 命名規則チェック     → C# ガイドライン準拠確認
+5. Null 安全性分析      → Null 参照エラーのリスク箇所特定
+6. パフォーマンス分析   → ボトルネック検出 → 最適化提案
+```
+
+**トリガー例**:
+```
+/code-analyzer
+
+または
+
+"テストカバレッジが低い箇所をテストして"
+"複雑度の高いメソッドをリファクタしたい"
+"Null 参照エラーのリスク箇所を教えて"
+```
+
+**使用開始**: [code-analyzer/README.md](code-analyzer/README.md) を参照
 
 ## 🚀 5分クイックスタート
 

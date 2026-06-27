@@ -48,6 +48,52 @@ powershell -ExecutionPolicy Bypass -File scripts/publish-exe.ps1
 補足:
 
 - 配布フォルダを丸ごと移動しても実行できます。
+
+## Claude Code スキル開発
+
+このプロジェクトには **Anthropic skill-creator メタスキル** が統合されており、Claude Code で新しいスキルを効率的に開発できます。
+
+### 利用可能なスキル
+
+#### 1. skill-creator（メタスキル）
+
+新しいスキルを開発するための基盤。
+
+```
+/skill-creator
+
+スキル設計ヒアリング → SKILL.md 自動生成 → テスト実行 → 品質評価 → 改善
+```
+
+詳細: [skills/GETTING_STARTED.md](skills/GETTING_STARTED.md)
+
+#### 2. code-analyzer（新規）
+
+C# コード品質を 6 つの角度から多面的に分析・改善するスキル。
+
+```
+/code-analyzer
+
+カバレッジ分析 + 複雑度分析 + 依存関係分析 + 命名規則チェック 
++ Null 安全性分析 + パフォーマンス分析 → 総合レポート生成
+```
+
+**トリガー例**:
+- "テストカバレッジが低い箇所をテストして"
+- "複雑度の高いメソッドをリファクタしたい"
+- "Null 参照エラーのリスク箇所を教えて"
+- "依存関係が複雑になっていないか確認して"
+
+詳細: [skills/code-analyzer/README.md](skills/code-analyzer/README.md)
+
+### スキル開発の流れ
+
+1. **アイデアを伝える**: "〇〇なスキルを作りたい"
+2. **Claude がヒアリング**: 要件を自動確認
+3. **SKILL.md 自動生成**: ドラフト作成
+4. **テスト実行**: スキル有り/無し並列比較
+5. **ビジュアルレビュー**: HTML で出力確認
+6. **改善・最適化**: フィードバック反映
 - scripts/publish-exe.ps1 実行後はルートの JsonEditor.exe も更新されるので、今後はこの1ファイルをダブルクリックすれば起動できます。
 - コード修正後は上記 publish コマンドを再実行して exe を更新してください。
 

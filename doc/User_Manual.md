@@ -91,6 +91,7 @@ powershell -ExecutionPolicy Bypass -File scripts/publish-exe.ps1
 - `Edit > Validate` を選択
 - または編集時にリアルタイムで自動検証
 - 結果はステータスバーへ表示
+- 構文エラー時はエラーメッセージに加えて `Line` と `Column` が表示される
 
 ---
 
@@ -185,7 +186,7 @@ powershell -ExecutionPolicy Bypass -File scripts/publish-exe.ps1
 ### 9.1 `Valid JSON` にならない
 
 - JSON 構文エラーがある可能性が高い
-- ステータスバーのエラー文を確認し、該当箇所を修正
+- ステータスバーのエラー文に表示された `Line`/`Column` を参照し、該当箇所を修正
 
 ### 9.2 検索しても一致しない
 

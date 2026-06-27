@@ -24,5 +24,7 @@ public class JsonValidationServiceTests
 
         Assert.False(result.IsValid);
         Assert.False(string.IsNullOrWhiteSpace(result.ErrorMessage));
+        Assert.NotNull(result.LineNumber);
+        Assert.NotNull(result.BytePositionInLine);
     }
 }

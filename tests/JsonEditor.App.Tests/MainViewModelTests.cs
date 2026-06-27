@@ -55,6 +55,21 @@ public class MainViewModelTests
     }
 
     [Fact]
+    public void ValidateCommand_AppendsLineAndColumn_WhenValidationContainsLocation()
+    {
+        var fixture = CreateFixture();
+        fixture.ValidationService
+            .Setup(x => x.Validate(It.IsAny<string>()))
+            .Returns(JsonValidationResult.Invalid("broken", 1, 4));
+
+        fixture.ViewModel.JsonText = "{";
+        fixture.ViewModel.ValidateCommand.Execute(null);
+
+        Assert.Equal("broken (Line: 2, Column: 5)", fixture.ViewModel.StatusMessage);
+        Assert.Empty(fixture.ViewModel.TreeNodes);
+    }
+
+    [Fact]
     public void ReplaceAllCommand_ReplacesJsonText_AndSetsCompletedStatus()
     {
         var fixture = CreateFixture();

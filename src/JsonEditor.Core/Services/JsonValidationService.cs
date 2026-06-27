@@ -19,7 +19,7 @@ public sealed class JsonValidationService : IJsonValidationService
         }
         catch (JsonException ex)
         {
-            return JsonValidationResult.Invalid(ex.Message);
+            return JsonValidationResult.Invalid(ex.Message, ex.LineNumber, ex.BytePositionInLine);
         }
     }
 }
