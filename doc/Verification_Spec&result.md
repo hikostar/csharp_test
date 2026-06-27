@@ -301,7 +301,86 @@ UIComponentTests (6/6 PASS):
 
 ---
 
-## 10. 付録: 主要成果物
+## 10. AI支援変更時の最小検証セット
+
+本章は Copilot/Agent/Skill を用いた変更に対する最低限の受入検証を定義する。
+
+### 10.1 実行対象
+
+対象変更:
+- `src/JsonEditor.Core` のロジック変更
+- `src/JsonEditor.App` の ViewModel/画面連携変更
+- 検索置換、検証、保存復元、自動保存、テーマ関連の挙動変更
+
+除外条件:
+- 文言のみの修正
+- コメントのみの修正
+
+### 10.2 必須コマンド
+
+1. ビルド
+
+```powershell
+dotnet build JsonEditor.sln
+```
+
+2. 通常テスト
+
+```powershell
+dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj
+```
+
+3. カバレッジ付きテスト
+
+```powershell
+dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --settings .runsettings --collect:"XPlat Code Coverage"
+```
+
+### 10.4 開発支援時の確認
+
+1. 変更案が `JsonEditor.Core` と `JsonEditor.App` の責務境界を壊していないこと
+2. 必要なテスト観点が先に列挙されていること
+3. 仕様/検証/運用ドキュメントの更新要否が明示されていること
+
+### 10.3 回帰観点チェック
+
+1. 妥当 JSON 入力時に `Valid JSON` 表示とツリー再構築が行われる
+2. 不正 JSON 入力時にエラー表示し、クラッシュしない
+3. 検索/置換（通常・Regex、大小文字）で件数と選択位置が整合する
+4. 保存/別名保存/バックアップ復元の主要フローが成立する
+5. テーマ切替と設定復元（起動/終了）が成立する
+
+### 10.4 判定基準
+
+1. テスト失敗 0 件
+2. 既存テスト総数を減らさない
+3. カバレッジが直近基準値（ライン 70.35%、ブランチ 54.23%）を大きく下回らない
+
+注記:
+- 一時的に下回る場合は、理由とフォローアップ計画を PR 説明に明記する
+
+### 10.5 PR 記載テンプレート（検証欄）
+
+参照テンプレート:
+- `.github/pull_request_template.md`
+- `doc/AI_PR_Validation_Examples.md`
+
+運用ルール:
+- AI支援PRでは本節の検証欄記載を必須とする
+- 非AI支援PRでは任意とする
+
+```text
+[AI変更 検証結果]
+- build: pass/fail
+- test: pass/fail (passed/failed/skipped)
+- coverage: line xx.xx%, branch xx.xx%
+- 回帰観点: OK/NG (要点)
+- 仕様/検証ドキュメント更新: 有/無
+```
+
+---
+
+## 11. 付録: 主要成果物
 
 - テスト設定: .runsettings
 - CI: .github/workflows/ci.yml
@@ -313,4 +392,4 @@ UIComponentTests (6/6 PASS):
 ---
 
 最終更新日: 2026-06-27
-ドキュメント版: 3.1
+ドキュメント版: 3.2

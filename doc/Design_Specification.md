@@ -345,9 +345,42 @@ JsonEditor は JSON テキスト編集と JSON 構造確認を目的とした WP
 2. 複数ドキュメント対応
 - タブ管理による複数ファイル編集
 
----
+## 13. Copilot適用時の設計制約
 
-## 13. 変更管理ルール（ドキュメント運用）
+本章は AI 支援（Copilot/Agent/Skill）での実装時に必ず守る制約を定義する。
+
+### 13.1 依存方向
+
+1. `JsonEditor.Core` は WPF 参照を持たない
+2. `JsonEditor.App` から `JsonEditor.Core` への一方向依存を維持する
+3. テストは本番コードの内部実装ではなく公開挙動を検証する
+
+### 13.2 変更粒度
+
+1. UI 表示都合の修正で Core の責務を増やさない
+2. 検索/置換/検証ロジックは Core 側へ集約する
+3. 例外処理方針（クラッシュ回避 + `StatusMessage` 通知）を崩さない
+
+### 13.3 非機能制約
+
+1. 想定サイズ 10MB 前提の操作応答性を悪化させない
+2. 正規表現検索のタイムアウト設定（250ms）を維持する
+3. 自動保存の最小間隔 5 秒制約を維持する
+
+### 13.4 変更時の必須確認
+
+1. 本書 6/7/8/10 章に仕様差分がないか確認する
+2. 仕様差分がある場合は同一変更で本書を更新する
+3. 検証手順は [検証仕様兼結果報告書](doc/Verification_Spec&result.md) に追記する
+
+### 13.5 Copilot運用リファレンス
+
+1. リポジトリ制約は `.instructions.md` を参照する
+2. PR本文作成は `.github/pull_request_template.md` と `.github/prompts/pr-authoring.prompt.md` を使用する
+3. PRレビュー観点は `.agent.md` と `.github/skills/pr-review/SKILL.md` を使用する
+4. 開発支援は `.prompt.md` と `.github/skills/dev-support/SKILL.md` を使用する
+
+## 14. 変更管理ルール（ドキュメント運用）
 
 - 新機能追加時
   - 本書の 6, 7, 8, 10 章を更新

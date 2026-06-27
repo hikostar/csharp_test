@@ -1,0 +1,56 @@
+name: PR Review Guard
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  ai-pr-template-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate AI-assisted PR body
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          set -euo pipefail
+
+          body="${PR_BODY:-}"
+          title="${PR_TITLE:-}"
+
+          is_ai="false"
+          if echo "$body" | grep -q "- \[x\] AI支援PR（Copilot/Agent/Skill を利用）"; then
+            is_ai="true"
+          fi
+
+          if echo "$title" | grep -qi "\[ai-assisted\]\|\[ai\]"; then
+            is_ai="true"
+          fi
+
+          if [ "$is_ai" != "true" ]; then
+            echo "Non AI-assisted PR: guard skipped."
+            exit 0
+          fi
+
+          required_patterns=(
+            "## AI変更 検証結果（AI支援PRのみ必須）"
+            "- build:"
+            "- test:"
+            "- coverage:"
+            "- 回帰観点:"
+            "- 仕様/検証ドキュメント更新:"
+          )
+
+          for p in "${required_patterns[@]}"; do
+            if ! echo "$body" | grep -q -- "$p"; then
+              echo "Missing required AI verification field: $p"
+              exit 1
+            fi
+          done
+
+          if echo "$body" | grep -q "xx.xx%\|pass/fail"; then
+            echo "AI verification fields still have placeholders."
+            exit 1
+          fi
+
+          echo "AI-assisted PR body validation passed."
