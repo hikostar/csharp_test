@@ -320,30 +320,40 @@ public sealed class MainViewModel : INotifyPropertyChanged
         {
             while (await AutoSaveTimer.WaitForNextTickAsync())
             {
-                if (string.IsNullOrWhiteSpace(CurrentFilePath))
-                {
-                    continue;
-                }
-
-                var hasRecentEdit = DateTime.UtcNow - _lastEditTimeUtc < TimeSpan.FromSeconds(AutoSaveIntervalSeconds);
-                if (!hasRecentEdit)
-                {
-                    continue;
-                }
-
-                try
-                {
-                    await File.WriteAllTextAsync(CurrentFilePath + ".autosave", JsonText);
-                    StatusMessage = "Autosaved backup";
-                }
-                catch (Exception ex)
-                {
-                    StatusMessage = $"Autosave failed: {ex.Message}";
-                }
+                await RunAutoSaveOnceAsync();
             }
         }
         catch (ObjectDisposedException)
         {
+        }
+    }
+
+    internal async Task RunAutoSaveOnceAsync()
+    {
+        if (string.IsNullOrWhiteSpace(CurrentFilePath))
+        {
+            return;
+        }
+
+        var hasRecentEdit = DateTime.UtcNow - _lastEditTimeUtc < TimeSpan.FromSeconds(AutoSaveIntervalSeconds);
+        if (!hasRecentEdit)
+        {
+            return;
+        }
+
+        await TryAutoSaveBackupAsync();
+    }
+
+    private async Task TryAutoSaveBackupAsync()
+    {
+        try
+        {
+            await File.WriteAllTextAsync(CurrentFilePath + ".autosave", JsonText);
+            StatusMessage = "Autosaved backup";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Autosave failed: {ex.Message}";
         }
     }
 

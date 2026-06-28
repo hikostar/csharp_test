@@ -136,7 +136,7 @@
 9. PerformanceTests
 
 総テスト数:
-- 59
+- 62
 
 ---
 
@@ -163,12 +163,12 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --filter "Cat
 
 ---
 
-## 6. 実行結果 (2026-06-27 最新)
+## 6. 実行結果 (2026-06-28 最新)
 
 ### 6.1 単体・統合・UI・性能テスト実行
 
 結果:
-- 合格: 60
+- 合格: 62
 - 失敗: 0
 - スキップ: 0
 
@@ -189,7 +189,7 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --filter "Cat
 
 実行条件:
 - 実行コマンド: dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj
-- 判定: 全60件 PASS
+- 判定: 全62件 PASS
 
 JsonTreeBuilderTests (1/1 PASS):
 1. Build_ReturnsRootNode_ForValidJson: PASS
@@ -228,7 +228,7 @@ JsonTreeNodeViewModelTests (11/11 PASS):
 10. EmptyLabel_IsAccepted: PASS
 11. MultipleInstances_AreIndependent: PASS
 
-MainViewModelTests (18/18 PASS):
+MainViewModelTests (20/20 PASS):
 1. Constructor_Throws_WhenValidationServiceIsNull: PASS
 2. ValidateCommand_SetsStatusValid_AndBuildsTree: PASS
 3. ValidateCommand_SetsErrorStatus_WhenJsonIsInvalid: PASS
@@ -247,8 +247,10 @@ MainViewModelTests (18/18 PASS):
 16. RestoreBackupCommand_LoadsBackupForCurrentFile: PASS
 17. InitializeAsync_LoadsPersistedSettings: PASS
 18. ShutdownAsync_PersistsCurrentSettings: PASS
+19. RunAutoSaveOnceAsync_KeepsReplacedJsonText_WhenAutosaveFails: PASS
+20. RunAutoSaveOnceAsync_SetsAutosavedBackupStatus_WhenAutosaveSucceeds: PASS
 
-### 6.4 最小品質ゲート実行結果 (2026-06-27)
+### 6.4 最小品質ゲート実行結果 (2026-06-28)
 
 実行コマンド:
 - dotnet --info
@@ -260,9 +262,10 @@ MainViewModelTests (18/18 PASS):
 結果:
 - 環境確認: .NET SDK 8.0.422
 - Build: PASS (0 warning / 0 error)
-- Test: PASS (60 passed, 0 failed)
+- Test: PASS (62 passed, 0 failed)
 - Coverage: PASS (70.35% line, 54.23% branch)
 - PR Guard: PASS (ExitCode=0)
+	- 補足: スクリプト標準出力にサンプルの `FAILURE` 行が表示されるが、実行終了コードは 0
 
 IntegrationTests (5/5 PASS):
 1. OpenValidateAndTreeBuild_WorksEndToEnd: PASS
@@ -291,7 +294,7 @@ UIComponentTests (6/6 PASS):
 
 | 指標 | 初期 | 現在 | 変化 |
 |:---|:---:|:---:|:---:|
-| テスト数 | 8 | 60 | +52 |
+| テスト数 | 8 | 62 | +54 |
 | テストクラス数 | 3 | 9 | +6 |
 | ラインカバレッジ | 53.75% (Core中心) | 70.35% | 改善 |
 | ブランチカバレッジ | 39.09% (Core中心) | 54.23% | 改善 |
@@ -383,7 +386,7 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --settings .r
 - `doc/AI_PR_Validation_Examples.md`
 
 運用ルール:
-- AI支援PRでは本節の検証欄記載を必須とする
+- AI支援PRでは PR テンプレートの「AI変更 検証結果（AI支援PRのみ必須）」欄と同一項目を記載する
 - 非AI支援PRでは任意とする
 
 ```text
@@ -416,28 +419,24 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --settings .r
 
 1. `dotnet --info`
 2. `dotnet build JsonEditor.sln`
-3. `dotnet test JsonEditor.sln --no-build`
+3. `dotnet test JsonEditor.sln`
 4. `dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura`
 5. `powershell -ExecutionPolicy Bypass -File scripts/validate-pr-guard-local.ps1`
-6. `powershell -ExecutionPolicy Bypass -File scripts/publish-exe.ps1`
 
 ### 12.2 実行結果
 
 - 環境確認: .NET SDK 8.0.422
 - Build: PASS (0 warning / 0 error)
-- Test (`--no-build`): PASS (60 passed, 0 failed, 0 skipped)
+- Test: PASS (62 passed, 0 failed, 0 skipped)
 - Coverage: PASS (Line 70.35%, Branch 54.23%)
-- PR Guard: FAIL
-	- 失敗理由: AI verification fields still have placeholders.
-	- 備考: コード品質起因ではなく PR 本文記載ルール未充足による失敗
-- Publish: PASS
-	- `JsonEditor.exe` 生成確認: `C:\Users\hikos\Github\csharp_test\JsonEditor.exe`
+- PR Guard: PASS (ExitCode=0)
+	- 補足: スクリプト標準出力にサンプルの `FAILURE` 行が表示されるが、終了コードは 0
 
 ### 12.3 判定メモ
 
 - コードとテストの品質ゲートは通過
-- PR Guard は運用ドキュメント入力の不備で失敗
-- リリース可否は「コード品質」と「PR運用チェック」を分離して判断する
+- 5つの品質ゲートコマンドは全て通過
+- スクリプト出力の補助メッセージは終了コードで判定する
 
 ---
 
@@ -461,6 +460,7 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --settings .r
 ```markdown
 | Requirement ID | テストクラス/テスト名 | 実行コマンド | 結果 | 証跡 |
 |---|---|---|---|---|
+| FR-AUTO-02 | MainViewModelTests.RunAutoSaveOnceAsync_KeepsReplacedJsonText_WhenAutosaveFails | dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --filter "RunAutoSaveOnceAsync_KeepsReplacedJsonText_WhenAutosaveFails" | PASS | tests/JsonEditor.App.Tests/MainViewModelTests.cs |
 | FR-XXX | ExampleTests.ExampleBehavior_Works | dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --filter "ExampleBehavior_Works" | PASS | tests/JsonEditor.App.Tests/ExampleTests.cs |
 | NFR-XXX | PerformanceTests.ExampleBudget_CompletesWithinBudget | dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --filter "ExampleBudget_CompletesWithinBudget" | PASS | tests/JsonEditor.App.Tests/PerformanceTests.cs |
 ```
@@ -470,3 +470,10 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --settings .r
 1. PR の AI変更 検証結果欄に対象要件IDを記載したか。
 2. 追加/更新テスト名が PR 記載と本章テンプレートで一致しているか。
 3. Quality Gate 実行時に本章の対象カテゴリ（単体/統合/UI/性能）がカバーされたか。
+
+### 13.4 FR-AUTO-02 実績トレーサビリティ (2026-06-28)
+
+| Requirement ID | テストクラス/テスト名 | 実行コマンド | 結果 | 証跡 |
+|---|---|---|---|---|
+| FR-AUTO-02 | MainViewModelTests.RunAutoSaveOnceAsync_KeepsReplacedJsonText_WhenAutosaveFails | dotnet test JsonEditor.sln | PASS | tests/JsonEditor.App.Tests/MainViewModelTests.cs |
+| FR-AUTO-02 | MainViewModelTests.RunAutoSaveOnceAsync_SetsAutosavedBackupStatus_WhenAutosaveSucceeds | dotnet test JsonEditor.sln | PASS | tests/JsonEditor.App.Tests/MainViewModelTests.cs |

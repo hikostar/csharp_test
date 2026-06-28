@@ -143,7 +143,7 @@
 | FR-THEME-02 | src/JsonEditor.App/MainWindow.xaml.cs (ApplyEditorHighlighting) | tests/JsonEditor.App.Tests/UIComponentTests.cs (ThemeCheckChanged_AppliesThemeFromViewModelState) |
 | FR-SET-01 | src/JsonEditor.Core/Services/AppSettingsStore.cs, src/JsonEditor.App/ViewModels/MainViewModel.cs (InitializeAsync/ShutdownAsync) | tests/JsonEditor.App.Tests/MainViewModelTests.cs (InitializeAsync_LoadsPersistedSettings, ShutdownAsync_PersistsCurrentSettings), tests/JsonEditor.App.Tests/IntegrationTests.cs (ThemeSettings_ArePersistedAcrossInitializeAndShutdown) |
 | FR-AUTO-01 | src/JsonEditor.App/ViewModels/MainViewModel.cs (RunAutoSaveLoopAsync, SaveBackupAsync) | tests/JsonEditor.App.Tests/IntegrationTests.cs (BackupRestoreFlow_WorksEndToEnd) |
-| FR-AUTO-02 | src/JsonEditor.App/ViewModels/MainViewModel.cs (autosave exception status) | 証跡不足: 専用失敗テストなし |
+| FR-AUTO-02 | src/JsonEditor.App/ViewModels/MainViewModel.cs (TryAutoSaveBackupAsync autosave exception status) | tests/JsonEditor.App.Tests/MainViewModelTests.cs (RunAutoSaveOnceAsync_KeepsReplacedJsonText_WhenAutosaveFails, RunAutoSaveOnceAsync_SetsAutosavedBackupStatus_WhenAutosaveSucceeds) |
 | NFR-PERF-01 | tests/JsonEditor.App.Tests/PerformanceTests.cs (JsonValidation_LargePayload_CompletesWithinBudget) | tests/JsonEditor.App.Tests/PerformanceTests.cs |
 | NFR-PERF-02 | tests/JsonEditor.App.Tests/PerformanceTests.cs (SearchCount_LargePayload_CompletesWithinBudget) | tests/JsonEditor.App.Tests/PerformanceTests.cs |
 | NFR-PERF-03 | tests/JsonEditor.App.Tests/PerformanceTests.cs (ReplaceAll_LargePayload_CompletesWithinBudget) | tests/JsonEditor.App.Tests/PerformanceTests.cs |

@@ -424,6 +424,94 @@ public class MainViewModelTests
             Times.Once);
     }
 
+    [Fact]
+    public async Task RunAutoSaveOnceAsync_KeepsReplacedJsonText_WhenAutosaveFails()
+    {
+        var fixture = CreateFixture();
+        fixture.ValidationService.Setup(x => x.Validate(It.IsAny<string>())).Returns(JsonValidationResult.Valid());
+        fixture.TreeBuilder.Setup(x => x.Build(It.IsAny<string>())).Returns((JsonTreeNode?)null);
+        fixture.SearchReplaceService.Setup(x => x.ReplaceAll(It.IsAny<string>(), It.IsAny<SearchOptions>())).Returns("beta");
+        fixture.SearchReplaceService.Setup(x => x.CountMatches(It.IsAny<string>(), It.IsAny<SearchOptions>())).Returns(1);
+
+        var filePath = Path.Combine(Path.GetTempPath(), $"json-editor-{Guid.NewGuid():N}.json");
+        var backupPath = filePath + ".autosave";
+
+        try
+        {
+            File.WriteAllText(filePath, "alpha");
+            File.WriteAllText(backupPath, "initial");
+            File.SetAttributes(backupPath, FileAttributes.ReadOnly);
+
+            fixture.FileDialogService.Setup(x => x.ShowOpenDialog()).Returns(filePath);
+            fixture.ViewModel.OpenFileCommand.Execute(null);
+
+            fixture.ViewModel.SearchText = "alpha";
+            fixture.ViewModel.ReplaceText = "beta";
+            fixture.ViewModel.ReplaceAllCommand.Execute(null);
+
+            await fixture.ViewModel.RunAutoSaveOnceAsync();
+
+            Assert.Equal("beta", fixture.ViewModel.JsonText);
+            Assert.StartsWith("Autosave failed:", fixture.ViewModel.StatusMessage);
+        }
+        finally
+        {
+            if (File.Exists(backupPath))
+            {
+                File.SetAttributes(backupPath, FileAttributes.Normal);
+                File.Delete(backupPath);
+            }
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task RunAutoSaveOnceAsync_SetsAutosavedBackupStatus_WhenAutosaveSucceeds()
+    {
+        var fixture = CreateFixture();
+        fixture.ValidationService.Setup(x => x.Validate(It.IsAny<string>())).Returns(JsonValidationResult.Valid());
+        fixture.TreeBuilder.Setup(x => x.Build(It.IsAny<string>())).Returns((JsonTreeNode?)null);
+        fixture.SearchReplaceService.Setup(x => x.ReplaceAll(It.IsAny<string>(), It.IsAny<SearchOptions>())).Returns("beta");
+        fixture.SearchReplaceService.Setup(x => x.CountMatches(It.IsAny<string>(), It.IsAny<SearchOptions>())).Returns(1);
+
+        var filePath = Path.Combine(Path.GetTempPath(), $"json-editor-{Guid.NewGuid():N}.json");
+        var backupPath = filePath + ".autosave";
+
+        try
+        {
+            File.WriteAllText(filePath, "alpha");
+            fixture.FileDialogService.Setup(x => x.ShowOpenDialog()).Returns(filePath);
+            fixture.ViewModel.OpenFileCommand.Execute(null);
+
+            fixture.ViewModel.SearchText = "alpha";
+            fixture.ViewModel.ReplaceText = "beta";
+            fixture.ViewModel.ReplaceAllCommand.Execute(null);
+
+            await fixture.ViewModel.RunAutoSaveOnceAsync();
+
+            Assert.Equal("Autosaved backup", fixture.ViewModel.StatusMessage);
+            Assert.True(File.Exists(backupPath));
+            Assert.Equal("beta", File.ReadAllText(backupPath));
+        }
+        finally
+        {
+            if (File.Exists(backupPath))
+            {
+                File.SetAttributes(backupPath, FileAttributes.Normal);
+                File.Delete(backupPath);
+            }
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
+    }
+
     private static MainViewModelFixture CreateFixture()
     {
         var validation = new Mock<IJsonValidationService>();
