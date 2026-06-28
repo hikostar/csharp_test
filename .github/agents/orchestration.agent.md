@@ -49,6 +49,7 @@ argument-hint: "対象機能、完了条件、制約、期限を指定してく�
 	- `dotnet test JsonEditor.sln`
 	- `dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura`
 	- `powershell -ExecutionPolicy Bypass -File scripts/validate-pr-guard-local.ps1`
+ 	- 品質ゲート結果には `Execution Timestamp` と `Coverage Artifact Path` を必ず含める。
 6. ドキュメント: 実装結果に合わせて README/設計書/マニュアル/検証結果を更新する。
 7. 判定: Ready/Needs Changes と根拠、次アクションを提示する。
 
@@ -80,7 +81,10 @@ argument-hint: "対象機能、完了条件、制約、期限を指定してく�
 
 5. Verification
 - Commands Run
+- Execution Timestamp
 - Results
+- Coverage Artifact Path
+- Coverage Snapshot
 - Remaining Risks
 - Quality Gate Status: Pass/Fail (build, test, coverage, pr-guard)
 

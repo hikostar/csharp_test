@@ -25,7 +25,7 @@ function Invoke-GuardCheck {
         }
     }
 
-    if ($Body -match 'xx\.xx%|pass/fail') {
+    if ($Body -match 'xx\.xx%|pass/fail|YYYY-MM-DD HH:mm:ss \+09:00|TestResults/<id>/coverage\.cobertura\.xml') {
         return [pscustomobject]@{ Passed = $false; Message = 'AI verification fields still have placeholders.' }
     }
 
@@ -42,8 +42,10 @@ $aiBlock = [regex]::Match($template, '(?s)```text\s*(.*?)\s*```').Groups[1].Valu
 
 $successBody = $aiBlock
 $successBody = $successBody -replace 'pass/fail', 'pass'
-$successBody = $successBody -replace '\(passed/failed/skipped\)', '(59/59, failed 0, skipped 0)'
+$successBody = $successBody -replace '\(passed/failed/skipped\)', '(62/62, failed 0, skipped 0)'
 $successBody = $successBody -replace 'line xx\.xx%, branch xx\.xx%', 'line 70.35%, branch 54.23%'
+$successBody = $successBody -replace 'YYYY-MM-DD HH:mm:ss \+09:00', '2026-06-28 21:34:12 +09:00'
+$successBody = $successBody -replace 'tests/JsonEditor.App.Tests/TestResults/<id>/coverage\.cobertura\.xml', 'tests/JsonEditor.App.Tests/TestResults/c0b8d2be-1c53-4d65-8306-7817df261d12/coverage.cobertura.xml'
 
 $failureBody = $aiBlock
 

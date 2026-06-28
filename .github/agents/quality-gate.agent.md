@@ -20,14 +20,19 @@ argument-hint: "対象ブランチや変更内容、判定基準を指定して�
    - `dotnet test JsonEditor.sln`
    - `dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura`
    - `powershell -ExecutionPolicy Bypass -File scripts/validate-pr-guard-local.ps1`
-2. `doc/Verification_Spec&result.md` を参照し、要求されたテストカテゴリが実行結果に含まれているか確認する。
-3. 各結果を Pass/Fail で整理する。
-4. Fail 時は原因、影響、再試行手順を示す。
+2. テスト実行日時を記録する（`YYYY-MM-DD HH:mm:ss zzz` 形式）。
+3. カバレッジ実行後、最新の `coverage.cobertura.xml` を特定し、`line-rate`/`branch-rate` と分子分母（covered/valid）を取得する。
+4. `doc/Verification_Spec&result.md` を参照し、要求されたテストカテゴリが実行結果に含まれているか確認する。
+5. 各結果を Pass/Fail で整理する。
+6. Fail 時は原因、影響、再試行手順を示す。
 
 ## Output Format
 1. Commands Run
-2. Raw Results Summary
-3. Verification Spec Coverage Check
-4. Quality Gate Status
-5. Failure Analysis
-6. Recovery Plan
+2. Execution Timestamp
+3. Raw Results Summary
+4. Coverage Artifact Path
+5. Coverage Snapshot (line-rate, branch-rate, lines-covered/valid, branches-covered/valid)
+6. Verification Spec Coverage Check
+7. Quality Gate Status
+8. Failure Analysis
+9. Recovery Plan

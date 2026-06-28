@@ -178,6 +178,9 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --filter "Cat
 
 ### 6.2 カバレッジ結果
 
+実行日時:
+- 2026-06-28 17:28:57 +09:00
+
 結果ファイル:
 - tests/JsonEditor.App.Tests/TestResults/c0b8d2be-1c53-4d65-8306-7817df261d12/coverage.cobertura.xml
 
@@ -395,7 +398,9 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --settings .r
 - 追加/更新テスト: TestClass.TestName, ...
 - build: pass/fail
 - test: pass/fail (passed/failed/skipped)
+- 実行日時: YYYY-MM-DD HH:mm:ss +09:00
 - coverage: line xx.xx%, branch xx.xx%
+- coverage artifact: tests/JsonEditor.App.Tests/TestResults/<id>/coverage.cobertura.xml
 - 回帰観点: OK/NG (要点)
 - 仕様/検証ドキュメント更新: 有/無
 ```
@@ -425,10 +430,14 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --settings .r
 
 ### 12.2 実行結果
 
+実行日時:
+- 2026-06-28 17:28:57 +09:00
+
 - 環境確認: .NET SDK 8.0.422
 - Build: PASS (0 warning / 0 error)
 - Test: PASS (62 passed, 0 failed, 0 skipped)
 - Coverage: PASS (Line 70.35%, Branch 54.23%)
+- Coverage Artifact: tests/JsonEditor.App.Tests/TestResults/c0b8d2be-1c53-4d65-8306-7817df261d12/coverage.cobertura.xml
 - PR Guard: PASS (ExitCode=0)
 	- 補足: スクリプト標準出力にサンプルの `FAILURE` 行が表示されるが、終了コードは 0
 

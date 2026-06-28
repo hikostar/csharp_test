@@ -31,5 +31,7 @@ argument-hint: "要件ID、設計仕様、対象範囲、検証完了条件を�
 2. Traceability Matrix (Requirement ID -> Test Evidence)
 3. Test Implementation Summary
 4. Local Command Results
-5. Handoff Notes (to Quality Gate Agent / Documentation Author Agent)
-6. Open Risks
+5. Execution Timestamp
+6. Coverage Source (if available)
+7. Handoff Notes (to Quality Gate Agent / Documentation Author Agent)
+8. Open Risks

@@ -34,9 +34,13 @@ jobs:
 
           required_patterns=(
             "## AI変更 検証結果（AI支援PRのみ必須）"
+            "- 対象要件ID:"
+            "- 追加/更新テスト:"
             "- build:"
             "- test:"
+            "- 実行日時:"
             "- coverage:"
+            "- coverage artifact:"
             "- 回帰観点:"
             "- 仕様/検証ドキュメント更新:"
           )
@@ -48,7 +52,7 @@ jobs:
             fi
           done
 
-          if echo "$body" | grep -q "xx.xx%\|pass/fail"; then
+          if echo "$body" | grep -q "xx.xx%\|pass/fail\|YYYY-MM-DD HH:mm:ss +09:00\|TestResults/<id>/coverage.cobertura.xml"; then
             echo "AI verification fields still have placeholders."
             exit 1
           fi

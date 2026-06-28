@@ -31,7 +31,9 @@
 - 追加/更新テスト: TestClass.TestName, ...
 - build: pass/fail
 - test: pass/fail (passed/failed/skipped)
+- 実行日時: YYYY-MM-DD HH:mm:ss +09:00
 - coverage: line xx.xx%, branch xx.xx%
+- coverage artifact: tests/JsonEditor.App.Tests/TestResults/<id>/coverage.cobertura.xml
 - 回帰観点: OK/NG (要点)
 - 仕様/検証ドキュメント更新: 有/無
 ```
