@@ -17,11 +17,16 @@ argument-hint: "対象機能、背景、制約、期限を指定してくださ�
 2. スコープと非スコープを分離する。
 3. 制約（期限、互換性、品質）を列挙する。
 4. 受け入れ条件をテスト可能な形で定義する。
-5. 未確定事項を質問として残す。
+5. 要件IDごとに実装証跡とテスト証跡を整理する。
+6. 未確定事項を質問として残す。
 
 ## Output Format
 1. Goal
 2. Non-goals
 3. Constraints
-4. Acceptance Criteria
-5. Open Questions
+4. Functional Requirements (with Requirement IDs)
+5. Non-functional Requirements (with Requirement IDs)
+6. Acceptance Criteria
+7. Traceability Matrix (Requirement ID -> Implementation Evidence -> Test Evidence)
+8. Evidence Scope
+9. Open Questions

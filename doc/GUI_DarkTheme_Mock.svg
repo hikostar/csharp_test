@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1366" height="768" viewBox="0 0 1366 768">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1220"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <style>
+      .label { fill:#E5E7EB; font: 14px 'Segoe UI', sans-serif; }
+      .title { fill:#F3F4F6; font: 13px 'Segoe UI', sans-serif; font-weight:600; }
+      .mono  { fill:#CBD5E1; font: 13px Consolas, monospace; }
+      .chip  { fill:#0F172A; stroke:#334155; stroke-width:1; rx:6; }
+      .panel { fill:#111827; stroke:#1F2937; stroke-width:1; rx:12; }
+      .panel2{ fill:#0F172A; stroke:#1E293B; stroke-width:1; rx:10; }
+      .btn   { fill:#1E293B; stroke:#334155; stroke-width:1; rx:6; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1366" height="768" fill="url(#bgGrad)"/>
+
+  <rect x="0" y="0" width="1366" height="34" fill="#0A0F1A"/>
+  <text x="16" y="22" class="title">JSON Editor</text>
+
+  <rect x="0" y="34" width="1366" height="28" fill="#0E1525"/>
+  <text x="16" y="53" class="label">File</text>
+  <text x="56" y="53" class="label">Edit</text>
+  <text x="96" y="53" class="label">View</text>
+
+  <rect x="14" y="72" width="1338" height="56" class="panel"/>
+  <text x="26" y="96" class="label">Find</text>
+  <rect x="58" y="81" width="180" height="26" class="chip"/>
+  <rect x="248" y="81" width="48" height="26" class="btn"/>
+  <text x="263" y="99" class="label">Prev</text>
+  <rect x="304" y="81" width="48" height="26" class="btn"/>
+  <text x="318" y="99" class="label">Next</text>
+
+  <text x="364" y="96" class="label">Replace</text>
+  <rect x="426" y="81" width="180" height="26" class="chip"/>
+  <rect x="616" y="81" width="66" height="26" class="btn"/>
+  <text x="632" y="99" class="label">Preview</text>
+
+  <rect x="760" y="84" width="14" height="14" fill="#0F172A" stroke="#475569"/>
+  <text x="782" y="96" class="label">Regex</text>
+  <rect x="846" y="84" width="14" height="14" fill="#0F172A" stroke="#475569"/>
+  <text x="868" y="96" class="label">Match Case</text>
+  <rect x="962" y="84" width="14" height="14" fill="#22C55E" stroke="#16A34A"/>
+  <text x="984" y="96" class="label">Dark Theme</text>
+
+  <rect x="14" y="140" width="890" height="574" class="panel"/>
+  <rect x="26" y="152" width="866" height="550" class="panel2"/>
+
+  <text x="40" y="180" class="mono">1  {</text>
+  <text x="40" y="204" class="mono">2    &quot;name&quot;: &quot;sample&quot;,</text>
+  <text x="40" y="228" class="mono">3    &quot;enabled&quot;: true,</text>
+  <text x="40" y="252" class="mono">4    &quot;items&quot;: [1,2,3]</text>
+  <text x="40" y="276" class="mono">5  }</text>
+
+  <rect x="920" y="140" width="432" height="360" class="panel"/>
+  <text x="934" y="165" class="title">JSON Tree</text>
+  <rect x="932" y="176" width="408" height="312" class="panel2"/>
+  <text x="948" y="204" class="label">root</text>
+  <text x="968" y="230" class="label">name: sample</text>
+  <text x="968" y="256" class="label">enabled: true</text>
+  <text x="968" y="282" class="label">items</text>
+  <rect x="962" y="312" width="360" height="28" fill="#1D4ED8" opacity="0.35" rx="6"/>
+  <text x="968" y="331" class="label">selected: items[0] = 1</text>
+
+  <rect x="920" y="514" width="432" height="200" class="panel"/>
+  <text x="934" y="539" class="title">Replace Preview</text>
+  <rect x="932" y="550" width="408" height="152" class="panel2"/>
+  <text x="948" y="576" class="label">3 candidates</text>
+  <text x="948" y="602" class="mono">line 12: oldValue -&gt; newValue</text>
+  <text x="948" y="626" class="mono">line 48: oldValue -&gt; newValue</text>
+  <text x="948" y="650" class="mono">line 77: oldValue -&gt; newValue</text>
+
+  <rect x="0" y="724" width="1366" height="44" fill="#0D1424"/>
+  <text x="16" y="751" class="label">Status: Ready</text>
+  <text x="1110" y="751" class="label">Autosave(s):</text>
+  <rect x="1200" y="734" width="56" height="24" class="chip"/>
+  <text x="1221" y="751" class="label">30</text>
+</svg>

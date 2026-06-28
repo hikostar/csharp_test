@@ -254,6 +254,31 @@ JsonEditor は JSON テキスト編集と JSON 構造確認を目的とした WP
 - 起動時に設定値を復元
 - 終了時に設定値を保存
 
+#### 7.6.1 2026-06-28 実装反映（白背景解消）
+
+- テーマ辞書にコントロール共通スタイルを追加
+  - 対象: `TextBox`, `Button`, `CheckBox`, `Menu`, `MenuItem`, `StatusBar`, `TreeView`, `TreeViewItem`, `ListBox`, `ListBoxItem`, `ScrollViewer`
+- 白背景を発生させやすい既定配色依存を低減するため、以下のキーを追加
+  - `ControlBackgroundBrush`, `ControlForegroundBrush`, `ControlBorderBrush`
+  - `HoverBackgroundBrush`, `SelectedBackgroundBrush`, `SelectedForegroundBrush`, `DisabledForegroundBrush`
+- 選択色の統一
+  - `SystemColors.HighlightBrushKey` / `HighlightTextBrushKey` をテーマ側で上書き
+- 実装ファイル
+  - `src/JsonEditor.App/Themes/DarkTheme.xaml`
+  - `src/JsonEditor.App/Themes/LightTheme.xaml`
+
+#### 7.6.2 構文ハイライトのテーマ連動
+
+- JSON 構文色を Light/Dark 切替に追従させるため、XSHD 定義を 2 系統化
+- `ApplyTheme(bool isDarkTheme)` 実行時に `ApplyEditorHighlighting(isDarkTheme)` を呼び出して再適用
+- 実装ファイル
+  - `src/JsonEditor.App/MainWindow.xaml.cs`
+
+#### 7.6.3 UIモック資産
+
+- ダークテーマ配色レビュー用 SVG を追加
+  - `doc/GUI_DarkTheme_Mock.svg`
+
 ---
 
 ## 8. 永続化仕様
@@ -305,6 +330,11 @@ JsonEditor は JSON テキスト編集と JSON 構造確認を目的とした WP
 - `SearchReplaceServiceTests`
 - `RelayCommandTests`
 - `JsonTreeNodeViewModelTests`
+
+### 11.3 直近の実行結果（2026-06-28）
+
+- コマンド: `dotnet test JsonEditor.sln --no-build`
+- 結果: 合格 60 / 失敗 0 / スキップ 0
 
 ### 11.2 テスト上の課題
 
@@ -388,3 +418,11 @@ JsonEditor は JSON テキスト編集と JSON 構造確認を目的とした WP
   - 9 章（エラー方針）と 11 章（テスト）を更新
 - 仕様変更時
   - 「現行仕様」と「将来拡張案」の混同を避ける
+
+## 15. 更新履歴
+
+- 2026-06-28
+  - ダークモード白背景解消に伴うテーマ仕様（7.6）を更新
+  - 構文ハイライトのテーマ連動仕様を追加
+  - UI モック資産 `doc/GUI_DarkTheme_Mock.svg` を追記
+  - テスト実行結果（11.3）を追記

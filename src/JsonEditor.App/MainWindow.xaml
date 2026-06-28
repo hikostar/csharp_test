@@ -34,12 +34,11 @@
             <StatusBarItem>
                 <TextBlock Text="{Binding StatusMessage}" />
             </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="Autosave(s):" Margin="4,0,8,0" />
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBox Width="60" Text="{Binding AutoSaveIntervalSeconds, UpdateSourceTrigger=PropertyChanged}" />
+            <StatusBarItem HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Autosave(s):" Margin="4,0,8,0" />
+                    <TextBox Width="60" Text="{Binding AutoSaveIntervalSeconds, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
 
@@ -92,7 +91,8 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" CornerRadius="10" Padding="10" Background="{DynamicResource PanelBackgroundBrush}">
-                    <TreeView ItemsSource="{Binding TreeNodes}">
+                    <TreeView ItemsSource="{Binding TreeNodes}"
+                              Background="{DynamicResource ControlBackgroundBrush}">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                 <TextBlock Text="{Binding Label}" Foreground="{DynamicResource ForegroundBrush}" />
@@ -104,7 +104,8 @@
                 <Border Grid.Row="2" CornerRadius="10" Padding="10" Background="{DynamicResource PanelBackgroundBrush}">
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Top" Text="{Binding ReplacePreviewSummary}" Margin="0,0,0,6" Foreground="{DynamicResource ForegroundBrush}" />
-                        <ListBox ItemsSource="{Binding ReplacePreviewItems}" />
+                        <ListBox ItemsSource="{Binding ReplacePreviewItems}"
+                                 Background="{DynamicResource ControlBackgroundBrush}" />
                     </DockPanel>
                 </Border>
             </Grid>

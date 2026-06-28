@@ -17,12 +17,18 @@ argument-hint: "対象機能、完了条件、制約、期限を指定してく�
 6. 最終判定は `Release Readiness Agent` に委譲する。
 7. 不明点の探索のみ `Explore` を補助的に使う。
 
+## Execution Modes
+1. Full Delivery Mode: 要件定義 -> 設計 -> 実装 -> 品質ゲート -> ドキュメント -> 最終判定を実施する。
+2. Documentation-centric Mode: 要件再定義や文書整備が主目的でコード変更を伴わない場合、要件定義 -> ドキュメント -> 最終判定を実施する。
+3. 実行モードは依頼の完了条件に合わせて明示し、Delegation Trace に記録する。
+
 ## Execution Rules
-1. 各工程では、対応するサブエージェントを必ず1回以上呼び出してから次工程へ進む。
-2. 要件定義が未確定（Acceptance Criteria が検証可能でない）なら、設計・実装へ進まない。
-3. 品質ゲートが Fail の場合、ドキュメント更新と最終判定に進む前に原因と再実行計画を確定する。
-4. ドキュメント更新は `Documentation Author Agent` の結果を必須入力として扱う。
-5. 最終出力には、どのサブエージェントをどの工程で使ったかを Delegation Trace として記載する。
+1. Full Delivery Mode では、各工程で対応するサブエージェントを必ず1回以上呼び出してから次工程へ進む。
+2. Documentation-centric Mode では、`Requirements Definition Agent`、`Documentation Author Agent`、`Release Readiness Agent` を必須とする。
+3. 要件定義が未確定（Acceptance Criteria が検証可能でない）なら、次工程へ進まない。
+4. Full Delivery Mode で品質ゲートが Fail の場合、ドキュメント更新と最終判定に進む前に原因と再実行計画を確定する。
+5. ドキュメント更新は `Documentation Author Agent` の結果を必須入力として扱う。
+6. 最終出力には、どのサブエージェントをどの工程で使ったかを Delegation Trace として記載する。
 
 ## Constraints
 - DO NOT いきなり実装から始めない。まず要求と受け入れ条件を明文化する。

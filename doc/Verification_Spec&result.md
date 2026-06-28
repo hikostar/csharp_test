@@ -408,5 +408,36 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --settings .r
 
 ---
 
-最終更新日: 2026-06-27
-ドキュメント版: 3.2
+## 12. 再検証結果 (2026-06-28)
+
+### 12.1 実行コマンド
+
+1. `dotnet --info`
+2. `dotnet build JsonEditor.sln`
+3. `dotnet test JsonEditor.sln --no-build`
+4. `dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura`
+5. `powershell -ExecutionPolicy Bypass -File scripts/validate-pr-guard-local.ps1`
+6. `powershell -ExecutionPolicy Bypass -File scripts/publish-exe.ps1`
+
+### 12.2 実行結果
+
+- 環境確認: .NET SDK 8.0.422
+- Build: PASS (0 warning / 0 error)
+- Test (`--no-build`): PASS (60 passed, 0 failed, 0 skipped)
+- Coverage: PASS (Line 70.35%, Branch 54.23%)
+- PR Guard: FAIL
+	- 失敗理由: AI verification fields still have placeholders.
+	- 備考: コード品質起因ではなく PR 本文記載ルール未充足による失敗
+- Publish: PASS
+	- `JsonEditor.exe` 生成確認: `C:\Users\hikos\Github\csharp_test\JsonEditor.exe`
+
+### 12.3 判定メモ
+
+- コードとテストの品質ゲートは通過
+- PR Guard は運用ドキュメント入力の不備で失敗
+- リリース可否は「コード品質」と「PR運用チェック」を分離して判断する
+
+---
+
+最終更新日: 2026-06-28
+ドキュメント版: 3.3

@@ -17,12 +17,13 @@ argument-hint: "変更内容、更新対象ドキュメント、読者を指定�
 - `doc/Design_Specification.md`
 - `doc/User_Manual.md`
 - `doc/Verification_Spec&result.md`
+- `doc/Requirements_Specification.md`
 
-原則として上記4ファイルを更新対象にする。変更が不要なファイルがある場合は、不要理由を `Remaining Doc Gaps` に明示する。
+原則として上記5ファイルを更新対象にする。変更が不要なファイルがある場合は、不要理由を `Remaining Doc Gaps` に明示する。
 
 ## Approach
 1. 変更された機能と影響読者を特定する。
-2. 既定対象4ファイルの更新要否を判定し、必要なものを更新する。
+2. 既定対象5ファイルの更新要否を判定し、必要なものを更新する。
 3. 仕様・操作・制約・既知課題を整理して反映する。
 4. 追跡可能な変更履歴（何をなぜ更新したか）を残す。
 

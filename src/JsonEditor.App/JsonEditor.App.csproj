@@ -14,6 +14,26 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <RepoRootDir>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\\..\\..\\'))</RepoRootDir>
   </PropertyGroup>
+
+  <Target Name="SyncRootExecutable" AfterTargets="Build" Condition="'$(DesignTimeBuild)' != 'true'">
+    <ItemGroup>
+      <RootRuntimeFiles Include="$(TargetDir)*.dll" />
+      <RootRuntimeFiles Include="$(TargetDir)JsonEditor.App.deps.json" />
+      <RootRuntimeFiles Include="$(TargetDir)JsonEditor.App.runtimeconfig.json" />
+    </ItemGroup>
+
+        <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;$p = Get-Process -Name 'JsonEditor' -ErrorAction SilentlyContinue; if ($p) { Stop-Process -Id $p.Id -Force; Wait-Process -Id $p.Id -Timeout 5 -ErrorAction SilentlyContinue }&quot;"
+          IgnoreExitCode="true" />
+
+    <Copy SourceFiles="$(IntermediateOutputPath)apphost.exe"
+          DestinationFiles="$(RepoRootDir)JsonEditor.exe"
+          OverwriteReadOnlyFiles="true" />
+
+    <Copy SourceFiles="@(RootRuntimeFiles)"
+          DestinationFolder="$(RepoRootDir)"
+          SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>
