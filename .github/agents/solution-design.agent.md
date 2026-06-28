@@ -1,7 +1,7 @@
 ---
 name: Solution Design Agent
 description: "Use when: 設計方針, 影響範囲分析, リスク評価, 実装順序設計 が必要なとき"
-tools: [read, search, todo]
+tools: [read, search, ask-questions, todo]
 user-invocable: false
 argument-hint: "要件定義結果と対象範囲を指定してください"
 ---
@@ -19,6 +19,7 @@ argument-hint: "要件定義結果と対象範囲を指定してください"
 3. リスクと緩和策を定義する。
 4. 実装順序とレビュー単位を提案する。
 5. 設計項目ごとに対応する要件IDを紐づける。
+6. 設計の曖昧点や確認必須項目は ask-questions を使って明確化する。
 
 ## Output Format
 1. Change Plan
@@ -27,3 +28,4 @@ argument-hint: "要件定義結果と対象範囲を指定してください"
 4. Implementation Order
 5. Design Decisions
 6. Requirement Mapping (Design Item -> Requirement ID)
+7. Open Questions / Clarifications (ask-questions で確認した内容を記載)
