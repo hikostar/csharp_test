@@ -27,6 +27,8 @@
 <!-- AI支援PRの場合は必ず記載。非AI支援PRでは削除可。 -->
 ```text
 [AI変更 検証結果]
+- 対象要件ID: FR-xxx, NFR-xxx
+- 追加/更新テスト: TestClass.TestName, ...
 - build: pass/fail
 - test: pass/fail (passed/failed/skipped)
 - coverage: line xx.xx%, branch xx.xx%

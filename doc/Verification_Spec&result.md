@@ -388,6 +388,8 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --settings .r
 
 ```text
 [AI変更 検証結果]
+- 対象要件ID: FR-xxx, NFR-xxx
+- 追加/更新テスト: TestClass.TestName, ...
 - build: pass/fail
 - test: pass/fail (passed/failed/skipped)
 - coverage: line xx.xx%, branch xx.xx%
@@ -441,3 +443,30 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --settings .r
 
 最終更新日: 2026-06-28
 ドキュメント版: 3.3
+
+---
+
+## 13. Requirement ID トレーサビリティテンプレート
+
+本章は `Verification & Test Design Agent` が検証仕様更新時に使用する標準テンプレートを定義する。
+
+### 13.1 記載ルール
+
+1. すべての追加/更新テストは Requirement ID に紐づける。
+2. Requirement ID ごとに「対象テスト」「実行結果」「証跡リンク」を記載する。
+3. 未実装または未実行の項目は `Pending` とし、理由と次アクションを明記する。
+
+### 13.2 テンプレート
+
+```markdown
+| Requirement ID | テストクラス/テスト名 | 実行コマンド | 結果 | 証跡 |
+|---|---|---|---|---|
+| FR-XXX | ExampleTests.ExampleBehavior_Works | dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --filter "ExampleBehavior_Works" | PASS | tests/JsonEditor.App.Tests/ExampleTests.cs |
+| NFR-XXX | PerformanceTests.ExampleBudget_CompletesWithinBudget | dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --filter "ExampleBudget_CompletesWithinBudget" | PASS | tests/JsonEditor.App.Tests/PerformanceTests.cs |
+```
+
+### 13.3 更新チェックリスト
+
+1. PR の AI変更 検証結果欄に対象要件IDを記載したか。
+2. 追加/更新テスト名が PR 記載と本章テンプレートで一致しているか。
+3. Quality Gate 実行時に本章の対象カテゴリ（単体/統合/UI/性能）がカバーされたか。
