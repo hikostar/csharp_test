@@ -117,6 +117,25 @@
 状態:
 - 計画中
 
+### 段階12: WinUI3 スパイク検証
+
+実装内容:
+1. `feature/winui3-spike` ブランチで WinUI3 プロジェクトを追加
+2. Copilot WinUI plugin / WinApp CLI / WinUI templates を導入
+3. `MainPage` に Open / Save / Validate / StatusMessage の最小機能を実装
+4. 依存方向 `JsonEditor.WinUI3 -> JsonEditor.Core` を維持
+
+要件ID:
+- WINUI-SPIKE-FR-01: WinUI3 プロジェクトがソリューションに追加されビルド可能
+- WINUI-SPIKE-FR-02: WinUI3 から Core 参照を維持し逆依存なし
+- WINUI-SPIKE-FR-03: Open でファイル内容を読み込み可能
+- WINUI-SPIKE-FR-04: Save でテキスト保存可能
+- WINUI-SPIKE-FR-05: Validate で Core 検証結果を通知可能
+- WINUI-SPIKE-NFR-01: 例外時にクラッシュせず失敗メッセージ通知
+
+状態:
+- 実施中（自動検証は一部完了、手動UI検証は継続）
+
 ---
 
 ## 4. 現在のテスト資産
@@ -164,6 +183,33 @@ dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --filter "Cat
 ---
 
 ## 6. 実行結果 (2026-06-28 最新)
+
+### 6.0 WinUI3 スパイク実行結果（2026-06-28）
+
+実行コマンド:
+- `copilot plugin list`
+- `winapp --help`
+- `dotnet new list winui`
+- `dotnet build src/JsonEditor.WinUI3/JsonEditor.WinUI3.csproj -v minimal`
+- `dotnet build JsonEditor.sln -v minimal`
+- `dotnet test tests/JsonEditor.App.Tests/JsonEditor.App.Tests.csproj --filter "FullyQualifiedName~JsonValidationServiceTests" -v minimal`
+
+結果:
+- Plugin: PASS (`winui@awesome-copilot (v0.4.0)`)
+- WinApp CLI: PASS (`Windows App Development CLI 0.4.0`)
+- WinUI Templates: PASS（`winui, winui3, wasdk-single` を含むテンプレート一覧表示）
+- WinUI3 Build: PASS（0 warning / 0 error）
+- Solution Build: PASS（0 warning / 0 error）
+- Core JSON Validation Tests: PASS（2 passed, 0 failed）
+
+未完了項目（手動）:
+- M-01 Open 正常系
+- M-02 Open キャンセル
+- M-03 Save 正常系
+- M-04 Save キャンセル
+- M-05 Validate 正常 JSON
+- M-06 Validate 不正 JSON
+- M-07 例外系（非クラッシュ）
 
 ### 6.1 単体・統合・UI・性能テスト実行
 

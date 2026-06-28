@@ -2,7 +2,7 @@
 
 **作成日**: 2026-06-25  
 **対象プロジェクト**: JsonEditor  
-**対象バージョン**: .NET 8 / WPF
+**対象バージョン**: .NET 8 / WPF (+ WinUI3 Spike)
 
 ---
 
@@ -22,6 +22,7 @@
 ### 2.1 対象
 
 - `src/JsonEditor.App`
+- `src/JsonEditor.WinUI3`（スパイク実装）
 - `src/JsonEditor.Core`
 - `tests/JsonEditor.App.Tests`（設計整合の裏付けとして参照）
 
@@ -35,7 +36,7 @@
 
 ## 3. システム概要
 
-JsonEditor は JSON テキスト編集と JSON 構造確認を目的とした WPF デスクトップアプリケーションである。主機能は以下。
+JsonEditor は JSON テキスト編集と JSON 構造確認を目的としたデスクトップアプリケーションである。現行の本実装は WPF で、WinUI3 はスパイク段階で並行検証する。主機能は以下。
 
 - JSON テキスト編集（AvalonEdit）
 - リアルタイム JSON バリデーション
@@ -53,7 +54,7 @@ JsonEditor は JSON テキスト編集と JSON 構造確認を目的とした WP
 
 ### 4.1 レイヤー構成
 
-1. Presentation 層: `JsonEditor.App`
+1. Presentation 層: `JsonEditor.App`（WPF）, `JsonEditor.WinUI3`（スパイク）
 - 画面表示、ユーザー入力処理、表示状態管理
 - `MainWindow` と `MainViewModel` が中心
 
@@ -66,6 +67,7 @@ JsonEditor は JSON テキスト編集と JSON 構造確認を目的とした WP
 ### 4.2 依存方向
 
 - `JsonEditor.App` -> `JsonEditor.Core`
+- `JsonEditor.WinUI3` -> `JsonEditor.Core`
 - `JsonEditor.App.Tests` -> `JsonEditor.Core`（および App の一部）
 - `JsonEditor.Core` は WPF 非依存
 
@@ -74,6 +76,13 @@ JsonEditor は JSON テキスト編集と JSON 構造確認を目的とした WP
 - DI コンテナは未導入
 - `MainViewModel` 内でサービスを直接 `new` している
 - UI イベントと ViewModel 状態同期は `MainWindow.xaml.cs` で実装
+
+### 4.4 WinUI3 スパイクの範囲（2026-06-28）
+
+- 対象プロジェクト: `src/JsonEditor.WinUI3`
+- 目的: WPF 本体を変更せず、WinUI3 で最小垂直スライスを成立させる
+- 実装範囲: Open / Save / Validate / StatusMessage
+- エディタ方針: TextBox を使用（AvalonEdit 相当機能は対象外）
 
 ---
 

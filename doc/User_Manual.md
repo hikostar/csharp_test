@@ -219,6 +219,31 @@ powershell -ExecutionPolicy Bypass -File scripts/publish-exe.ps1
 
 ---
 
+## 11. WinUI3 スパイク版（試験導入）
+
+本節は `feature/winui3-spike` で検証する暫定手順を示す。WPF 版の正式運用手順を置き換えるものではない。
+
+### 11.1 起動
+
+```powershell
+dotnet run --project src/JsonEditor.WinUI3/JsonEditor.WinUI3.csproj
+```
+
+### 11.2 実装済み機能（最小）
+
+- Open
+- Save
+- Validate
+- StatusMessage 表示
+
+### 11.3 スコープ外
+
+- 検索/置換 UI
+- ツリービュー連動
+- AvalonEdit 相当の構文色分け
+
+---
+
 ## 11. 将来拡張予定（参考）
 
 この章は現行機能ではない。
