@@ -1,12 +1,12 @@
 ---
-name: orchestration-agent
+name: delivery-orchestration
 description: '要件定義、設計、実装、テスト、CI/CD までの開発ライフサイクル全体を統括する。Use for end-to-end orchestration, release readiness checks, quality gate decisions, and delivery planning.'
 argument-hint: '作りたい機能/改善内容と制約（期限・品質・対象範囲）を指定'
 user-invocable: true
 disable-model-invocation: false
 ---
 
-# Orchestration Agent
+# Delivery Orchestration Skill
 
 ## 目的
 
@@ -114,6 +114,6 @@ disable-model-invocation: false
 
 ## 使い方の例
 
-- /orchestration-agent ユーザー設定の検索置換機能を追加したい。要件とテスト観点を含めて計画して
-- /orchestration-agent 次リリースの品質ゲートを定義して、CI への反映タスクまで分解して
-- /orchestration-agent 既存機能の性能劣化対策を、設計からリリース判定まで管理して
+- /delivery-orchestration ユーザー設定の検索置換機能を追加したい。要件とテスト観点を含めて計画して
+- /delivery-orchestration 次リリースの品質ゲートを定義して、CI への反映タスクまで分解して
+- /delivery-orchestration 既存機能の性能劣化対策を、設計からリリース判定まで管理して

@@ -1,4 +1,9 @@
-# Skill: JsonEditor Dev Support
+---
+name: development-support
+description: 'ドキュメント調査、実装支援、テスト設計・実行を支援する。Use for day-to-day development support, implementation help, test planning, and documentation impact checks.'
+---
+
+# Skill: JsonEditor Development Support
 
 ## 目的
 

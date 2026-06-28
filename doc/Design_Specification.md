@@ -405,10 +405,16 @@ JsonEditor は JSON テキスト編集と JSON 構造確認を目的とした WP
 
 ### 13.5 Copilot運用リファレンス
 
-1. リポジトリ制約は `.instructions.md` を参照する
+1. リポジトリ制約は `.github/copilot-instructions.md` を参照する
 2. PR本文作成は `.github/pull_request_template.md` と `.github/prompts/pr-authoring.prompt.md` を使用する
-3. PRレビュー観点は `.agent.md` と `.github/skills/pr-review/SKILL.md` を使用する
-4. 開発支援は `.prompt.md` と `.github/skills/dev-support/SKILL.md` を使用する
+3. PRレビュー観点は `.github/skills/pull-request-review/SKILL.md` を使用する
+4. 開発支援は `.github/prompts/prompt-catalog.prompt.md` と `.github/skills/development-support/SKILL.md` を使用する
+
+使用例:
+
+1. 要件定義から実装・検証まで一気通貫で進める場合は `/delivery-orchestration` を使用する
+2. 局所的な実装相談、変更影響確認、必要テスト整理は `/development-support` を使用する
+3. PR差分の設計制約確認、欠落テスト確認、ドキュメント不足確認は `/pull-request-review` を使用する
 
 ## 14. 変更管理ルール（ドキュメント運用）
 

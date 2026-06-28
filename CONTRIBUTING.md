@@ -39,9 +39,14 @@ AI支援PRの場合はタイトルに `[AI]` か `[AI-assisted]` を含める。
 
 レビュー補助資産:
 
-- Agent: `.agent.md`
-- Skill: `.github/skills/pr-review/SKILL.md`
+- Skill: `.github/skills/pull-request-review/SKILL.md`
 - Prompt: `.github/prompts/pr-authoring.prompt.md`
+
+Copilotカスタマイズの使い分け:
+
+- `/delivery-orchestration` は要件整理から実装・検証・判定まで一気通貫で進めたいときに使う。
+- `/development-support` は局所的な実装相談、変更影響確認、必要テスト整理に使う。
+- `/pull-request-review` は PR差分の設計制約確認、不足テスト確認、ドキュメント不足確認に使う。
 
 ## 6. マージ前確認
 

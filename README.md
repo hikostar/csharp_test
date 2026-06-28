@@ -161,16 +161,30 @@ dotnet test JsonEditor.sln
 1. PR本文は `.github/pull_request_template.md` を使用する
 2. AI支援PRでは「AI変更 検証結果」欄の記入を必須とする
 3. 作成者は build/test/coverage の実行結果を記入する
-4. レビューアは `.agent.md` と `.github/skills/pr-review/SKILL.md` の観点で確認する
+4. レビューアは `.github/skills/pull-request-review/SKILL.md` の観点で確認する
 
 ### Copilotカスタマイズ資産
 
-- リポジトリ制約: `.instructions.md`
-- 標準プロンプト集: `.prompt.md`
+使い分け:
+
+- `.github/copilot-instructions.md` は常時適用する全体制約を定義する。
+- `.github/prompts/` は定型依頼テンプレートを置く。
+- `.github/skills/` はユーザーが直接呼ぶ作業入口を置く。
+- `.github/agents/` は内部委譲または役割特化の実行単位を置く。
+
+呼び出し例:
+
+- `/delivery-orchestration 検索置換機能の改善を、要件整理から品質ゲートまで通して進めて`
+- `/development-support MainViewModel の変更影響と必要テストを整理して`
+- `/pull-request-review このPR差分の設計制約違反と不足テストを見て`
+
+- リポジトリ制約: `.github/copilot-instructions.md`
+- 標準プロンプト集: `.github/prompts/prompt-catalog.prompt.md`
 - PR本文生成プロンプト: `.github/prompts/pr-authoring.prompt.md`
-- PRレビューAgent: `.agent.md`
-- PRレビューSkill: `.github/skills/pr-review/SKILL.md`
-- 開発支援Skill: `.github/skills/dev-support/SKILL.md`
+- PRレビューSkill: `.github/skills/pull-request-review/SKILL.md`
+- 開発支援Skill: `.github/skills/development-support/SKILL.md`
+- オーケストレーションSkill: `.github/skills/delivery-orchestration/SKILL.md`
+- オーケストレーションAgent: `.github/agents/delivery-orchestration.agent.md`
 - 運用手順: `CONTRIBUTING.md`
 - ワークフロー検証例: `doc/AI_PR_Validation_Examples.md`
 - ローカル検証スクリプト: `scripts/validate-pr-guard-local.ps1`
